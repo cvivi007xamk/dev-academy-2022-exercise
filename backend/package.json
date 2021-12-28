@@ -1,0 +1,24 @@
+{
+	"name": "farmbackend",
+	"version": "0.0.1",
+	"description": "backend for farm data",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"dev": "nodemon index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Ville Virtanen",
+	"license": "ISC",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"csv": "^6.0.4",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.2",
+		"pg": "^8.7.1",
+		"sequelize": "^7.0.0-alpha.2"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
