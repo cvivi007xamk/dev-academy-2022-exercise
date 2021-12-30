@@ -7,7 +7,10 @@ const { stringify } = require("csv-stringify");
 const postgres = require("./postgres");
 const csvFunctions = require("./csvFunctions");
 const cors = require("cors");
+const axios = require("axios");
+
 app.use(cors());
+app.use(express.json());
 
 // // Endpoints to fetch data from farms with different granularities (by month, by metric)
 // // Aggregate calculation endpoints, endpoint which returns monthly averages, min/max and other statistical analysis
@@ -21,14 +24,6 @@ app.use(cors());
 // 	res.send(monthlyData);
 // });
 
-app.get("/api", (req, res) => {
-	res.json({ message: "Hello from Node server!" });
-});
-
-const PORT = 3001;
-app.listen(PORT);
-console.log(`Server running on port ${PORT}`);
-
 // ## Validation rules
 // * Accept only temperature,rainfall and PH data. Other metrics should be discarded
 // * Discard invalid values with next rules
@@ -41,8 +36,25 @@ console.log(`Server running on port ${PORT}`);
 const filesDirectory = path.join(__dirname, "/csvFiles/");
 
 // Read the csv-files, parse and validate them. And finally write them to Postgres database.
-csvFunctions
-	.readDirectory(filesDirectory)
-	.then((filenames) =>
-		csvFunctions.writeFilesToDB(filenames, filesDirectory)
-	);
+
+const parseAndWriteData = async () => {
+	let promiseFilenames = csvFunctions.readDirectory(filesDirectory);
+	let filenames = await promiseFilenames;
+	let csvData = csvFunctions.getDataFromFiles(filenames, filesDirectory);
+	postgres.writeDataToDB(csvData);
+};
+//parseAndWriteData();
+
+const latestData = postgres.getLatestData(10);
+app.get("/api", async (req, res) => {
+	console.log("latestData from index.js", latestData);
+	res.send(await latestData);
+});
+
+// app.get('/item/:name', async function (req, res) {
+//     res.send(await findItemByName(req.params.name));
+//   });
+
+const PORT = 3001;
+app.listen(PORT);
+console.log(`Server running on port ${PORT}`);

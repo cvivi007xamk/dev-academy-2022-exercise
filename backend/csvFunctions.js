@@ -52,7 +52,7 @@ const validateCSV = (csvRow) => {
 };
 
 // Function to read the csv-files data to an array of objects (and then write that data to PostgreSQL table)
-const writeFilesToDB = (filenames, filesDirectory) => {
+const getDataFromFiles = (filenames, filesDirectory) => {
 	filenames = filenames.filter(
 		(filename) => path.extname(filename) == ".csv"
 	);
@@ -92,7 +92,8 @@ const writeFilesToDB = (filenames, filesDirectory) => {
 				// If the file is the last one to read from, then write the data to a Postgres database.
 
 				if (i == filenames.length - 1) {
-					postgres.createDB(csvData);
+					//dataToWrite = csvData;
+					//postgres.writeDataToDB(csvData);
 
 					// Also make a new csv file that has all the data.
 					stringify(
@@ -107,6 +108,7 @@ const writeFilesToDB = (filenames, filesDirectory) => {
 				}
 			});
 	}
+	return csvData;
 };
 
-module.exports = { readDirectory, changeType, validateCSV, writeFilesToDB };
+module.exports = { readDirectory, changeType, validateCSV, getDataFromFiles };

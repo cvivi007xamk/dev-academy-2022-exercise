@@ -11,6 +11,7 @@
 	"author": "Ville Virtanen",
 	"license": "ISC",
 	"dependencies": {
+		"axios": "^0.24.0",
 		"cors": "^2.8.5",
 		"csv": "^6.0.4",
 		"dotenv": "^10.0.0",

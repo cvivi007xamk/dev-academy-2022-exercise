@@ -1,11 +1,40 @@
 require("dotenv").config();
-const { Sequelize, QueryTypes, DataTypes } = require("sequelize");
+const { Sequelize, QueryTypes, DataTypes, Op } = require("sequelize");
 const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 // const { Client } = require("pg");
 // let client = new Client({
 // 	connectionString: "postgresql://postgres:farm_data@localhost/postgres",
 // });
+
+const Farm = sequelize.define(
+	"Farm",
+	{
+		// Model attributes are defined here
+		location: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		datetime: {
+			type: DataTypes.DATE,
+			allowNull: false,
+		},
+		sensorType: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		value: {
+			type: DataTypes.FLOAT,
+			allowNull: false,
+		},
+	},
+	{
+		// Other model options go here
+	}
+);
+
+//
+//
 
 const connectDB2 = async () => {
 	try {
@@ -44,41 +73,33 @@ const connectDB = async () => {
 	}
 };
 
-const createDB = (data) => {
+const writeDataToDB = async (data) => {
 	console.log("Creating Postgres table Farms");
-
-	const Farm = sequelize.define(
-		"Farm",
-		{
-			// Model attributes are defined here
-			location: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			datetime: {
-				type: DataTypes.DATE,
-				allowNull: false,
-			},
-			sensorType: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			value: {
-				type: DataTypes.FLOAT,
-				allowNull: false,
-			},
-		},
-		{
-			// Other model options go here
-		}
-	);
-
-	(async () => {
-		await sequelize.sync({ force: true });
-		// Code here
-		await Farm.bulkCreate(data);
-		console.log("Writing data to Farms table");
-	})();
+	await sequelize.sync({ force: true });
+	// Code here
+	await Farm.bulkCreate(data);
+	console.log("Writing data to Farms table");
 };
 
-module.exports = { createDB, connectDB };
+const getAllData = async () => {
+	await Farm.sync();
+	const allData = await Farm.findAll();
+	console.log("Getting all data from Farms table");
+	return allData;
+};
+
+const getLatestData = async (numberOfRecords) => {
+	await Farm.sync();
+	const latestRecords = await Farm.findAll({
+		order: [["datetime", "DESC"]],
+		limit: numberOfRecords,
+	});
+
+	await console.log(
+		`Getting ${numberOfRecords} latest records`,
+		latestRecords
+	);
+	return latestRecords;
+};
+
+module.exports = { Farm, writeDataToDB, connectDB, getAllData, getLatestData };
