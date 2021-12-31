@@ -22,32 +22,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
-function createData(name, calories, fat, carbs, protein) {
-	return {
-		name,
-		calories,
-		fat,
-		carbs,
-		protein,
-	};
-}
-
-const rows = [
-	createData("Cupcake", 305, 3.7, 67, 4.3),
-	createData("Donut", 452, 25.0, 51, 4.9),
-	createData("Eclair", 262, 16.0, 24, 6.0),
-	createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-	createData("Gingerbread", 356, 16.0, 49, 3.9),
-	createData("Honeycomb", 408, 3.2, 87, 6.5),
-	createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-	createData("Jelly Bean", 375, 0.0, 94, 0.0),
-	createData("KitKat", 518, 26.0, 65, 7.0),
-	createData("Lollipop", 392, 0.2, 98, 0.0),
-	createData("Marshmallow", 318, 0, 81, 2.0),
-	createData("Nougat", 360, 19.0, 9, 37.0),
-	createData("Oreo", 437, 18.0, 63, 4.0),
-];
-
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
 		return -1;
@@ -66,34 +40,34 @@ function getComparator(order, orderBy) {
 
 const headCells = [
 	{
-		id: "name",
-		numeric: false,
-		disablePadding: true,
-		label: "Dessert (100g serving)",
+		id: "id",
+		alignRight: false,
+		disablePadding: false,
+		label: "ID",
 	},
 	{
-		id: "calories",
-		numeric: true,
+		id: "location",
+		alignRight: true,
 		disablePadding: false,
-		label: "Calories",
+		label: "Location",
 	},
 	{
-		id: "fat",
-		numeric: true,
+		id: "datetime",
+		alignRight: true,
 		disablePadding: false,
-		label: "Fat (g)",
+		label: "Time",
 	},
 	{
-		id: "carbs",
-		numeric: true,
+		id: "sensorType",
+		alignRight: true,
 		disablePadding: false,
-		label: "Carbs (g)",
+		label: "Sensor Type",
 	},
 	{
-		id: "protein",
-		numeric: true,
+		id: "value",
+		alignRight: true,
 		disablePadding: false,
-		label: "Protein (g)",
+		label: "Value",
 	},
 ];
 
@@ -109,7 +83,7 @@ function EnhancedTableHead(props) {
 				{headCells.map((headCell) => (
 					<TableCell
 						key={headCell.id}
-						align={headCell.numeric ? "right" : "left"}
+						align={headCell.alignRight ? "right" : "left"}
 						padding={headCell.disablePadding ? "none" : "normal"}
 						sortDirection={orderBy === headCell.id ? order : false}
 					>
@@ -141,12 +115,13 @@ EnhancedTableHead.propTypes = {
 	rowCount: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
 	const [order, setOrder] = React.useState("asc");
-	const [orderBy, setOrderBy] = React.useState("calories");
+	const [orderBy, setOrderBy] = React.useState("datetime");
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	let rows = props.data;
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -176,7 +151,7 @@ export default function EnhancedTable() {
 			<Paper sx={{ width: "100%", mb: 2, overflow: "hidden" }}>
 				<TableContainer sx={{ maxHeight: 440 }}>
 					<Table
-						sx={{ minWidth: 750 }}
+						sx={{ minWidth: 400 }}
 						stickyHeader
 						aria-labelledby="tableTitle"
 						size={dense ? "small" : "medium"}
@@ -202,27 +177,26 @@ export default function EnhancedTable() {
 										<TableRow
 											hover
 											tabIndex={-1}
-											key={row.name}
+											key={row.id}
 										>
 											<TableCell
 												component="th"
 												id={labelId}
 												scope="row"
-												padding="none"
 											>
-												{row.name}
+												{row.id}
 											</TableCell>
 											<TableCell align="right">
-												{row.calories}
+												{row.location}
 											</TableCell>
 											<TableCell align="right">
-												{row.fat}
+												{row.datetime}
 											</TableCell>
 											<TableCell align="right">
-												{row.carbs}
+												{row.sensorType}
 											</TableCell>
 											<TableCell align="right">
-												{row.protein}
+												{row.value}
 											</TableCell>
 										</TableRow>
 									);
@@ -240,7 +214,7 @@ export default function EnhancedTable() {
 					</Table>
 				</TableContainer>
 				<TablePagination
-					rowsPerPageOptions={[5, 10, 25, 100]}
+					rowsPerPageOptions={[5, 10, 50, 100, 500]}
 					component="div"
 					count={rows.length}
 					rowsPerPage={rowsPerPage}
@@ -253,7 +227,7 @@ export default function EnhancedTable() {
 				control={
 					<Switch checked={dense} onChange={handleChangeDense} />
 				}
-				label="Dense padding"
+				label="Dense layout"
 			/>
 		</Box>
 	);

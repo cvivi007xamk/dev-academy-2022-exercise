@@ -102,4 +102,54 @@ const getLatestData = async (numberOfRecords) => {
 	return latestRecords;
 };
 
-module.exports = { Farm, writeDataToDB, connectDB, getAllData, getLatestData };
+const getFarmData = async (farmName) => {
+	await Farm.sync();
+	const records = await Farm.findAll({
+		where: {
+			location: farmName,
+		},
+	});
+	return records;
+};
+
+const getSensorData = async (sensor) => {
+	await Farm.sync();
+	const records = await Farm.findAll({
+		where: {
+			sensorType: sensor,
+		},
+	});
+	return records;
+};
+
+const getMonthlyData = async (month) => {
+	await Farm.sync();
+	const records = await Farm.findAll({
+		where: {
+			datetime: farmName,
+		},
+	});
+	return records;
+};
+
+const getDataBetweenDates = async (starDate, endDate) => {
+	await Farm.sync();
+	const records = await Farm.findAll({
+		where: {
+			datetime: { [Op.between]: [starDate, endDate] },
+		},
+	});
+	return records;
+};
+
+module.exports = {
+	Farm,
+	writeDataToDB,
+	connectDB,
+	getAllData,
+	getLatestData,
+	getDataBetweenDates,
+	getFarmData,
+	getMonthlyData,
+	getSensorData,
+};

@@ -51,6 +51,23 @@ app.get("/api", async (req, res) => {
 	res.send(await latestData);
 });
 
+app.get("/api/:farmName", async (req, res) => {
+	res.send(await postgres.getFarmData(req.params.farmName));
+});
+
+app.get("/api/:sensor", async (req, res) => {
+	res.send(await postgres.getSensorData(req.params.sensor));
+});
+
+app.get("/api/:startDate/:endDate", async (req, res) => {
+	res.send(
+		await postgres.getDataBetweenDates(
+			req.params.startDate,
+			req.params.endDate
+		)
+	);
+});
+
 // app.get('/item/:name', async function (req, res) {
 //     res.send(await findItemByName(req.params.name));
 //   });
