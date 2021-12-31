@@ -102,21 +102,25 @@ const getLatestData = async (numberOfRecords) => {
 	return latestRecords;
 };
 
-const getFarmData = async (farmName) => {
+const getFarmData = async (farmNamesArray) => {
 	await Farm.sync();
 	const records = await Farm.findAll({
 		where: {
-			location: farmName,
+			location: {
+				[Op.or]: farmNamesArray.split(","),
+			},
 		},
 	});
 	return records;
 };
 
-const getSensorData = async (sensor) => {
+const getSensorData = async (sensorsArray) => {
 	await Farm.sync();
 	const records = await Farm.findAll({
 		where: {
-			sensorType: sensor,
+			sensorType: {
+				[Op.or]: sensorsArray.split(","),
+			},
 		},
 	});
 	return records;

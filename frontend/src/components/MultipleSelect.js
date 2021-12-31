@@ -42,7 +42,7 @@ export default function MultipleSelect(props) {
 		const {
 			target: { value },
 		} = event;
-		props.setFarmNames(
+		props.setFarmNamesArray(
 			// On autofill we get a stringified value.
 			typeof value === "string" ? value.split(",") : value
 		);
@@ -56,7 +56,7 @@ export default function MultipleSelect(props) {
 					labelId="farm-select"
 					id="farm-select"
 					multiple
-					value={props.farmNames}
+					value={props.farmNamesArray}
 					onChange={handleChange}
 					input={
 						<OutlinedInput
@@ -79,7 +79,7 @@ export default function MultipleSelect(props) {
 						<MenuItem
 							key={name}
 							value={name}
-							style={getStyles(name, props.farmNames, theme)}
+							style={getStyles(name, props.farmNamesArray, theme)}
 						>
 							{name}
 						</MenuItem>

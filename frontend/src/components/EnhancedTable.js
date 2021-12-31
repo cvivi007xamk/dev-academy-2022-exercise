@@ -21,6 +21,9 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import fi from "date-fns/locale/fi";
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -190,7 +193,9 @@ export default function EnhancedTable(props) {
 												{row.location}
 											</TableCell>
 											<TableCell align="right">
-												{row.datetime}
+												{new Date(
+													row.datetime
+												).toLocaleString()}
 											</TableCell>
 											<TableCell align="right">
 												{row.sensorType}
