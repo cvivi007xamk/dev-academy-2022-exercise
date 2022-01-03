@@ -2,11 +2,6 @@ require("dotenv").config();
 const { Sequelize, QueryTypes, DataTypes, Op } = require("sequelize");
 const sequelize = new Sequelize(process.env.DATABASE_URL);
 
-// const { Client } = require("pg");
-// let client = new Client({
-// 	connectionString: "postgresql://postgres:farm_data@localhost/postgres",
-// });
-
 const Farm = sequelize.define(
 	"Farm",
 	{
@@ -146,6 +141,29 @@ const getDataBetweenDates = async (starDate, endDate) => {
 	return records;
 };
 
+const createDataRow = async (rowObj) => {
+	await Farm.sync();
+	await Farm.create(rowObj);
+};
+
+const updateDataRow = async (idNum, rowObj) => {
+	await Farm.sync();
+	await Farm.update(rowObj, {
+		where: {
+			id: idNum,
+		},
+	});
+};
+
+const deleteDataRow = async (idNum) => {
+	await Farm.sync();
+	await Farm.destroy({
+		where: {
+			id: idNum,
+		},
+	});
+};
+
 module.exports = {
 	Farm,
 	writeDataToDB,
@@ -156,4 +174,7 @@ module.exports = {
 	getFarmData,
 	getMonthlyData,
 	getSensorData,
+	createDataRow,
+	updateDataRow,
+	deleteDataRow,
 };
