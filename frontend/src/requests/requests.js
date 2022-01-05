@@ -60,4 +60,4 @@ const deleteRow = async (id) => {
 	return response.data;
 };
 
-export { getData, createRow, updateRow };
+export { getData, createRow, updateRow, deleteRow };

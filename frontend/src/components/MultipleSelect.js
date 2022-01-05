@@ -51,7 +51,7 @@ export default function MultipleSelect(props) {
 	return (
 		<div>
 			<FormControl sx={{ m: 1, width: 500 }}>
-				<InputLabel id="farm-select">Select Farm</InputLabel>
+				<InputLabel id="farm-select">Select Farms</InputLabel>
 				<Select
 					labelId="farm-select"
 					id="farm-select"

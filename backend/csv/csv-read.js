@@ -1,10 +1,7 @@
-const express = require("express");
-const app = express();
 const fs = require("fs");
 const { parse } = require("csv-parse");
 const path = require("path");
 const { stringify } = require("csv-stringify");
-const postgres = require("./postgres");
 
 //Function to get the filenames present in the directory
 const readDirectory = (dirname) => {

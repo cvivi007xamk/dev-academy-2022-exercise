@@ -53,11 +53,12 @@ const ChangeDates = (props) => {
 							sx={{
 								marginTop: "20px",
 								marginBottom: "20px",
+								marginRight: "20px",
 							}}
 						/>
 					)}
 				/>
-				<br />
+
 				<DatePicker
 					disableMaskedInput={true}
 					label="End date:"

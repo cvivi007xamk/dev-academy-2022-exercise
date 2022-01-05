@@ -11,3 +11,24 @@ content-type: application/json
 }
 
 ###
+
+GET http://localhost:3001/measurements
+
+###
+
+GET http://localhost:3001/measurements?id=87
+
+
+
+###
+
+GET http://localhost:3001/farms
+
+###
+
+GET http://localhost:3001/farmslatest
+
+###
+
+GET http://localhost:3001/farmslatest2
+

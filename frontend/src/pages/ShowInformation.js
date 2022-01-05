@@ -17,9 +17,14 @@ import { Box } from "@mui/system";
 
 function ShowInformation() {
 	const [data, setData] = useState([]);
-	const [url, setUrl] = useState(`http://localhost:3001/api/`);
+	const [url, setUrl] = useState(`http://localhost:3001/measurements`);
 
-	const [farmNamesArray, setFarmNamesArray] = useState([]);
+	const [farmNamesArray, setFarmNamesArray] = useState([
+		"Friman Metsola collective",
+		"Noora's farm",
+		"Organic Ossi's Impact That Lasts plantase",
+		"PartialTech Research Farm",
+	]);
 	const [sensorsArray, setSensorsArray] = useState([
 		"pH",
 		"temperature",
@@ -55,31 +60,19 @@ function ShowInformation() {
 				textAlign: "center",
 			}}
 		>
-			<Typography variant="h1" color="initial">
-				Show information
+			<Typography variant="h2" color="initial" gutterBottom="true">
+				Filter information
 			</Typography>
 			<MultipleSelect
 				farmNamesArray={farmNamesArray}
 				setFarmNamesArray={setFarmNamesArray}
 			/>
-			<Button
-				variant="contained"
-				sx={{
-					marginTop: "20px",
-					marginBottom: "20px",
-				}}
-				onClick={() =>
-					setUrl(`http://localhost:3001/api/farm/${farmNamesArray}`)
-				}
-			>
-				Change Farms
-			</Button>
 
 			<SensorCheckboxes
 				sensorsArray={sensorsArray}
 				setSensorsArray={setSensorsArray}
 			/>
-			<Button
+			{/* <Button
 				variant="contained"
 				sx={{
 					marginTop: "20px",
@@ -90,26 +83,27 @@ function ShowInformation() {
 				}
 			>
 				Change Sensors
-			</Button>
+			</Button> */}
 			<ChangeDates
 				setStartDate={setStartDate}
 				setEndDate={setEndDate}
 				startDate={startDate}
 				endDate={endDate}
 			/>
+
 			<Button
 				variant="contained"
 				sx={{
-					marginTop: "20px",
-					marginBottom: "20px",
+					marginTop: "10px",
+					marginBottom: "40px",
 				}}
 				onClick={() =>
 					setUrl(
-						`http://localhost:3001/api/date/${startDate}/${endDate}`
+						`http://localhost:3001/meaurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
 					)
 				}
 			>
-				Change Date Range
+				Filter
 			</Button>
 			<EnhancedTable data={data} />
 		</Box>
