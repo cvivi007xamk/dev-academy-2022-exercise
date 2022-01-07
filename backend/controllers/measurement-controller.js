@@ -1,9 +1,12 @@
 const { QueryTypes, Op } = require("sequelize");
+const Farm = require("../models/farm-model");
+const Sensor = require("../models/sensor-model");
+
 const Measurement = require("../models/measurement-model");
 
 const getMeasurements = async () => {
 	await Measurement.sync();
-	const results = await Measurement.findAll();
+	const results = await Measurement.findAll({ include: [Farm, Sensor] });
 	return results;
 };
 
@@ -27,6 +30,7 @@ const getFilteredMeasurements = async (filters) => {
 const getLatestMeasurements = async (numberOfRecords) => {
 	await Measurement.sync();
 	const latestRecords = await Measurement.findAll({
+		include: [Farm, Sensor],
 		order: [["datetime", "DESC"]],
 		limit: numberOfRecords,
 	});

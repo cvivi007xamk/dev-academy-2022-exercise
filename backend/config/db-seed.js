@@ -1,36 +1,40 @@
 const path = require("path");
 const db = require("../config/db-config.js");
 
-const Measurement = require("../models/measurement-model");
 const Farm = require("../models/farm-model");
 const Sensor = require("../models/sensor-model");
+const Measurement = require("../models/measurement-model");
 
 const filesDirectory = path.join(__dirname, "../csv/csvFiles/");
 
 let farms = [
-	"Noora's farm",
-	"Friman Metsola collective",
-	"Organic Ossi's Impact That Lasts plantation",
-	"PartialTech Research Farm",
+	{ FarmName: "Noora's farm" },
+	{ FarmName: "Friman Metsola collective" },
+	{ FarmName: "Organic Ossi's Impact That Lasts plantase" },
+	{ FarmName: "PartialTech Research Farm" },
 ];
 
-let sensors = ["temperature", "rainFall", "pH"];
+let sensors = [
+	{ SensorName: "temperature" },
+	{ SensorName: "rainFall" },
+	{ SensorName: "pH" },
+];
 const seedMeasurementDataToDB = async (data) => {
-	await db.sync({ force: true });
+	await Measurement.sync({ force: true });
 	await Measurement.bulkCreate(data);
 };
 
 const seedFarmDataToDB = async (data) => {
-	await db.sync({ force: true });
+	await Farm.sync({ force: true });
 	await Farm.bulkCreate(data);
 };
 
 const seedSensorDataToDB = async (data) => {
-	await db.sync({ force: true });
+	await Sensor.sync({ force: true });
 	await Sensor.bulkCreate(data);
 };
 
-const initTablesToDB = async () => {
+const initRelationsToDB = async () => {
 	await db.sync({ force: true });
 	Farm.hasMany(Measurement);
 	Measurement.belongsTo(Farm);
@@ -42,7 +46,7 @@ module.exports = {
 	seedMeasurementDataToDB,
 	seedFarmDataToDB,
 	seedSensorDataToDB,
-	initTablesToDB,
+	initRelationsToDB,
 	farms,
 	sensors,
 };

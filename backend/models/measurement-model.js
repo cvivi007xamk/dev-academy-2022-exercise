@@ -9,7 +9,7 @@ const Measurement = db.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		Datetime: {
+		datetime: {
 			type: DataTypes.DATE,
 			allowNull: false,
 		},
@@ -17,7 +17,7 @@ const Measurement = db.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		Value: {
+		value: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 		},
@@ -26,10 +26,10 @@ const Measurement = db.define(
 		// Other model options go here
 
 		validate: {
-			sensorValues() {
+			checkSensorValueRange() {
 				if (
 					this.SensorId === 1 &&
-					(this.Value < -50 || this.Value > 100)
+					(this.value < -50 || this.value > 100)
 				) {
 					throw new Error(
 						"Temperature must be a value between -50 and 100"
@@ -37,7 +37,7 @@ const Measurement = db.define(
 				}
 				if (
 					this.SensorId === 2 &&
-					(this.Value < 0 || this.Value > 500)
+					(this.value < 0 || this.value > 500)
 				) {
 					throw new Error(
 						"Rainfall must be a value between 0 and 500"
@@ -45,7 +45,7 @@ const Measurement = db.define(
 				}
 				if (
 					this.SensorId === 3 &&
-					(this.Value < 0 || this.Value > 14)
+					(this.value < 0 || this.value > 14)
 				) {
 					throw new Error("pH must be a value between 0 and 14");
 				}

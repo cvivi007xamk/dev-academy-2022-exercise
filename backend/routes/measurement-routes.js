@@ -30,8 +30,8 @@ router.get("/measurements", async (req, res) => {
 	res.send(await getFilteredMeasurements(filters));
 });
 
-router.get("/measurements/latest", async (req, res) => {
-	res.send(await getLatestMeasurements(numberOfLatestMeasurements));
+router.get("/measurements/latest/:num", async (req, res) => {
+	res.send(await getLatestMeasurements(req.params.num));
 });
 
 router.get("/measurements/:startDate/:endDate", async (req, res) => {

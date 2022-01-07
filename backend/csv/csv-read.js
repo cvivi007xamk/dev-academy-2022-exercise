@@ -9,27 +9,52 @@ const changeType = (csvRow) => {
 	csvRow.value = Number(csvRow.value);
 	return csvRow;
 };
+const useIdNum = (data) => {
+	if (data.FarmId === "Noora's farm") {
+		data.FarmId = 1;
+	}
+	if (data.FarmId === "Friman Metsola collective") {
+		data.FarmId = 2;
+	}
+	if (data.FarmId === "Organic Ossi's Impact That Lasts plantase") {
+		data.FarmId = 3;
+	}
+	if (data.FarmId === "PartialTech Research Farm") {
+		data.FarmId = 4;
+	}
+	if (data.SensorId === "temperature") {
+		data.SensorId = 1;
+	}
+	if (data.SensorId === "rainFall") {
+		data.SensorId = 2;
+	}
+	if (data.SensorId === "pH") {
+		data.SensorId = 3;
+	}
+
+	return data;
+};
 
 // Function to validate the data read from csv-files. Returns true if row is validated and false if there is a problem.
 const validateCSV = (csvRow) => {
 	if (
-		csvRow.sensorType != "temperature" &&
-		csvRow.sensorType != "rainFall" &&
-		csvRow.sensorType != "pH"
+		csvRow.SensorId != "temperature" &&
+		csvRow.SensorId != "rainFall" &&
+		csvRow.SensorId != "pH"
 	)
 		return false;
 	if (
-		csvRow.sensorType == "pH" &&
+		csvRow.SensorId == "pH" &&
 		(Number(csvRow.value) < 0 || Number(csvRow.value) > 14)
 	)
 		return false;
 	if (
-		csvRow.sensorType == "temperature" &&
+		csvRow.SensorId == "temperature" &&
 		(Number(csvRow.value) < -50 || Number(csvRow.value) > 100)
 	)
 		return false;
 	if (
-		csvRow.sensorType == "rainFall" &&
+		csvRow.SensorId == "rainFall" &&
 		(Number(csvRow.value) < 0 || Number(csvRow.value) > 500)
 	)
 		return false;
@@ -53,7 +78,7 @@ const getDataFromFiles = async (filesDirectory) => {
 			.pipe(
 				parse({
 					delimiter: ",",
-					columns: true,
+					columns: ["FarmId", "datetime", "SensorId", "value"],
 					skip_records_with_empty_values: true,
 				})
 			)
@@ -61,7 +86,7 @@ const getDataFromFiles = async (filesDirectory) => {
 				//console.log(csvrow);
 				//do something with csvrow
 				if (validateCSV(csvrow) == true)
-					csvData.push(changeType(csvrow));
+					csvData.push(useIdNum(changeType(csvrow)));
 				else
 					console.log(
 						"Validation error on row",
@@ -94,10 +119,34 @@ const getDataFromFiles = async (filesDirectory) => {
 			});
 	}
 
-	for (let i = 0; i < 5; i++) {
-		console.log(csvData[i]);
-	}
 	return csvData;
 };
 
-module.exports = getDataFromFiles;
+const modifyDataForDb = (data) => {
+	for (let i = 0; i < data.length; i++) {
+		if (data[i].location === "Noora's farm") {
+			data[i].location = "1";
+		}
+		if (data[i].location === "Friman Metsola collective") {
+			data[i].location = "2";
+		}
+		if (data[i].location === "Organic Ossi's Impact That Lasts plantase") {
+			data[i].location = "3";
+		}
+		if (data[i].location === "PartialTech Research Farm") {
+			data[i].location = "4";
+		}
+		if (data[i].sensorType === "temperature") {
+			data[i].sensorType = "1";
+		}
+		if (data[i].sensorType === "rainFall") {
+			data[i].sensorType = "2";
+		}
+		if (data[i].sensorType === "pH") {
+			data[i].sensorType = "3";
+		}
+	}
+	return data;
+};
+
+module.exports = { getDataFromFiles, modifyDataForDb };
