@@ -6,9 +6,10 @@ const Sensor = db.define(
 	{
 		// Model attributes are defined here
 
-		sensorType: {
+		SensorName: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			unique: true,
 		},
 	},
 	{

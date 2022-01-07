@@ -4,21 +4,28 @@ const Farm = db.define(
 	"Farm",
 	{
 		// Model attributes are defined here
-		location: {
+		FarmName: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			unique: true,
 		},
-		datetime: {
-			type: DataTypes.DATE,
-			allowNull: false,
-		},
-		sensorType: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
-		value: {
+		Latitude: {
 			type: DataTypes.FLOAT,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: null,
+			validate: {
+				min: -90,
+				max: 90,
+			},
+		},
+		Longitude: {
+			type: DataTypes.FLOAT,
+			allowNull: true,
+			defaultValue: null,
+			validate: {
+				min: -180,
+				max: 180,
+			},
 		},
 	},
 	{
