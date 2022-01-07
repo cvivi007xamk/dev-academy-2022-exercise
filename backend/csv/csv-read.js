@@ -1,20 +1,8 @@
 const fs = require("fs");
+const fsp = require("fs").promises;
 const { parse } = require("csv-parse");
 const path = require("path");
 const { stringify } = require("csv-stringify");
-
-//Function to get the filenames present in the directory
-const readDirectory = (dirname) => {
-	return new Promise((resolve, reject) => {
-		fs.readdir(dirname, (error, filenames) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve(filenames);
-			}
-		});
-	});
-};
 
 // Function to change the type of value in csv-file
 const changeType = (csvRow) => {
@@ -49,7 +37,10 @@ const validateCSV = (csvRow) => {
 };
 
 // Function to read the csv-files data to an array of objects (and then write that data to PostgreSQL table)
-const getDataFromFiles = (filenames, filesDirectory) => {
+const getDataFromFiles = async (filesDirectory) => {
+	let filenames = await fsp.readdir(filesDirectory);
+
+	console.log("filenames = ", filenames);
 	filenames = filenames.filter(
 		(filename) => path.extname(filename) == ".csv"
 	);
@@ -89,9 +80,6 @@ const getDataFromFiles = (filenames, filesDirectory) => {
 				// If the file is the last one to read from, then write the data to a Postgres database.
 
 				if (i == filenames.length - 1) {
-					//dataToWrite = csvData;
-					//postgres.writeDataToDB(csvData);
-
 					// Also make a new csv file that has all the data.
 					stringify(
 						csvData,
@@ -105,7 +93,11 @@ const getDataFromFiles = (filenames, filesDirectory) => {
 				}
 			});
 	}
+
+	for (let i = 0; i < 5; i++) {
+		console.log(csvData[i]);
+	}
 	return csvData;
 };
 
-module.exports = { readDirectory, changeType, validateCSV, getDataFromFiles };
+module.exports = getDataFromFiles;
