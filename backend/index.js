@@ -4,12 +4,12 @@ const {
 	seedMeasurementDataToDB,
 	seedFarmDataToDB,
 	seedSensorDataToDB,
-	initTablesToDB,
+	initRelationsToDB,
 	farms,
 	sensors,
 } = require("./config/db-seed");
 const path = require("path");
-const getDataFromFiles = require("./csv/csv-read");
+const { getDataFromFiles, modifyDataForDb } = require("./csv/csv-read");
 const cors = require("cors");
 const farmRouter = require("./routes/farm-routes");
 const measurementRouter = require("./routes/measurement-routes");
@@ -33,9 +33,16 @@ const PORT = 3001;
 app.listen(PORT, async function (err) {
 	if (err) console.log("Error in server setup");
 	let measurements = await getDataFromFiles(filesDirectory);
-	initTablesToDB();
-	seedFarmDataToDB(farms);
-	seedSensorDataToDB(sensors);
-	seedMeasurementDataToDB(measurements);
+
+	(async () => {
+		await initRelationsToDB();
+		await seedFarmDataToDB(farms);
+		await seedSensorDataToDB(sensors);
+		await seedMeasurementDataToDB(measurements);
+	})();
 });
 console.log(`Node.js server running on port ${PORT}`);
+
+// (async () => {
+
+// })()
