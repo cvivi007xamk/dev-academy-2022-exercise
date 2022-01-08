@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { getData, createRow, updateRow } from "../requests/requests";
+import { getData } from "../requests/requests";
 import EnhancedTable from "../components/EnhancedTable";
 import MultipleSelect from "../components/MultipleSelect";
 import Button from "@mui/material/Button";
 import ChangeDates from "../components/ChangeDates";
 import SensorCheckboxes from "../components/SensorCheckboxes";
-import {
-	ThemeProvider,
-	createTheme,
-	responsiveFontSizes,
-} from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
+
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 
@@ -46,6 +40,25 @@ function ModifyInformation() {
 				setDataError(error);
 			});
 	}, [url]);
+
+	if (isLoaded === false) {
+		return (
+			<Box>
+				<Typography variant="h2">
+					Loading data from server...
+				</Typography>
+			</Box>
+		);
+	}
+	if (dataError) {
+		return (
+			<Box>
+				<Typography variant="h2">
+					Error getting the data from server. Error code: {dataError}
+				</Typography>
+			</Box>
+		);
+	}
 
 	return (
 		<Box

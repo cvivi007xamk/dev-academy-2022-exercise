@@ -51,7 +51,6 @@ const ChangeDates = (props) => {
 					value={startValue}
 					onChange={(newValue) => {
 						props.setStartDate(newValue.toISOString());
-						console.log("start date = ", newValue.toISOString());
 						setStartValue(newValue);
 					}}
 					renderInput={(params) => (
@@ -76,7 +75,6 @@ const ChangeDates = (props) => {
 					value={endValue}
 					onChange={(newValue) => {
 						props.setEndDate(setTimeToEndOfDay(newValue));
-						console.log("end date = ", setTimeToEndOfDay(newValue));
 						setEndValue(newValue);
 					}}
 					renderInput={(params) => (

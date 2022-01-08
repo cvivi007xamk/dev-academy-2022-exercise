@@ -8,8 +8,6 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
 
 export default function SensorCheckboxes(props) {
-	const [checked, setChecked] = React.useState(true);
-
 	const [sensors, setSensors] = React.useState({
 		pH: true,
 		temperature: true,
@@ -30,13 +28,7 @@ export default function SensorCheckboxes(props) {
 		props.setSensorsArray(helpArray);
 	};
 
-	console.log("props.sensorsArray", props.sensorsArray);
-
 	const { pH, temperature, rainFall } = sensors;
-
-	// const handleChange = (event) => {
-	// 	setChecked(event.target.checked);
-	// };
 
 	return (
 		<Box sx={{ margin: "auto" }}>

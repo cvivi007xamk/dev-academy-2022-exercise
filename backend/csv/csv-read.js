@@ -65,7 +65,6 @@ const validateCSV = (csvRow) => {
 const getDataFromFiles = async (filesDirectory) => {
 	let filenames = await fsp.readdir(filesDirectory);
 
-	console.log("filenames = ", filenames);
 	filenames = filenames.filter(
 		(filename) => path.extname(filename) == ".csv"
 	);

@@ -119,7 +119,6 @@ export default function EnhancedTable(props) {
 	const [dense, setDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	let rows = props.data;
-	console.log(rows);
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";

@@ -12,7 +12,6 @@ const getMeasurements = async () => {
 
 const getFilteredMeasurements = async (filters) => {
 	await Measurement.sync();
-	console.log(filters);
 	const results = await Measurement.findAll({
 		include: [
 			{
