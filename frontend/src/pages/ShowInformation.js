@@ -31,6 +31,7 @@ function ShowInformation() {
 	);
 
 	// Set the endDate
+
 	const [endDate, setEndDate] = useState(new Date().toISOString());
 
 	const [url, setUrl] = useState(
@@ -48,6 +49,24 @@ function ShowInformation() {
 		console.log("Current URL:", url);
 	}, [url]);
 
+	if (isLoaded === false) {
+		return (
+			<Box>
+				<Typography variant="h2">
+					Loading data from server...
+				</Typography>
+			</Box>
+		);
+	}
+	if (dataError) {
+		return (
+			<Box>
+				<Typography variant="h2">
+					Error getting the data from server. Error code: {dataError}
+				</Typography>
+			</Box>
+		);
+	}
 	return (
 		<Box
 			sx={{
@@ -56,7 +75,7 @@ function ShowInformation() {
 				textAlign: "center",
 			}}
 		>
-			<Typography variant="h2" color="initial" gutterBottom="true">
+			<Typography variant="h2" color="initial" gutterBottom>
 				Filter information
 			</Typography>
 			<MultipleSelect

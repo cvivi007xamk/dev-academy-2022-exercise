@@ -11,10 +11,10 @@ const changeType = (csvRow) => {
 };
 const useIdNum = (data) => {
 	if (data.FarmId === "Noora's farm") {
-		data.FarmId = 1;
+		data.FarmId = 2;
 	}
 	if (data.FarmId === "Friman Metsola collective") {
-		data.FarmId = 2;
+		data.FarmId = 1;
 	}
 	if (data.FarmId === "Organic Ossi's Impact That Lasts plantase") {
 		data.FarmId = 3;
@@ -23,13 +23,13 @@ const useIdNum = (data) => {
 		data.FarmId = 4;
 	}
 	if (data.SensorId === "temperature") {
-		data.SensorId = 1;
+		data.SensorId = 3;
 	}
 	if (data.SensorId === "rainFall") {
 		data.SensorId = 2;
 	}
 	if (data.SensorId === "pH") {
-		data.SensorId = 3;
+		data.SensorId = 1;
 	}
 
 	return data;

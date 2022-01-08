@@ -4,16 +4,16 @@ const Sensor = require("../models/sensor-model");
 const Measurement = require("../models/measurement-model");
 
 let farms = [
-	{ FarmName: "Noora's farm" },
 	{ FarmName: "Friman Metsola collective" },
+	{ FarmName: "Noora's farm" },
 	{ FarmName: "Organic Ossi's Impact That Lasts plantase" },
 	{ FarmName: "PartialTech Research Farm" },
 ];
 
 let sensors = [
-	{ SensorName: "temperature" },
-	{ SensorName: "rainFall" },
 	{ SensorName: "pH" },
+	{ SensorName: "rainFall" },
+	{ SensorName: "temperature" },
 ];
 const seedMeasurementDataToDB = async (data) => {
 	await Measurement.sync({ force: true });

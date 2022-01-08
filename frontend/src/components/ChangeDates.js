@@ -31,6 +31,15 @@ const ChangeDates = (props) => {
 	const [startValue, setStartValue] = React.useState(firstDate);
 	const [endValue, setEndValue] = React.useState(today);
 
+	const setTimeToEndOfDay = (endTime) => {
+		endTime.setHours(23);
+		endTime.setMinutes(59);
+		endTime.setSeconds(59);
+		endTime.setMilliseconds(999);
+		endTime = endTime.toISOString();
+		return endTime;
+	};
+
 	return (
 		<Box>
 			<LocalizationProvider dateAdapter={AdapterDateFns} locale={fi}>
@@ -42,7 +51,7 @@ const ChangeDates = (props) => {
 					value={startValue}
 					onChange={(newValue) => {
 						props.setStartDate(newValue.toISOString());
-						console.log("start date", newValue.toISOString());
+						console.log("start date = ", newValue.toISOString());
 						setStartValue(newValue);
 					}}
 					renderInput={(params) => (
@@ -66,8 +75,8 @@ const ChangeDates = (props) => {
 					defaultValue={today}
 					value={endValue}
 					onChange={(newValue) => {
-						props.setEndDate(newValue.toISOString());
-						console.log("end date", newValue.toISOString());
+						props.setEndDate(setTimeToEndOfDay(newValue));
+						console.log("end date = ", setTimeToEndOfDay(newValue));
 						setEndValue(newValue);
 					}}
 					renderInput={(params) => (

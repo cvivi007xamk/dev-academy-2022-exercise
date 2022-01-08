@@ -33,30 +33,35 @@ function getComparator(order, orderBy) {
 const headCells = [
 	{
 		id: "id",
+		numeric: true,
 		alignRight: false,
 		disablePadding: false,
 		label: "ID",
 	},
 	{
-		id: "location",
+		id: "FarmId",
+		numeric: false,
 		alignRight: true,
 		disablePadding: false,
 		label: "Location",
 	},
 	{
 		id: "datetime",
+		numeric: true,
 		alignRight: true,
 		disablePadding: false,
 		label: "Time",
 	},
 	{
-		id: "sensorType",
+		id: "SensorId",
+		numeric: false,
 		alignRight: true,
 		disablePadding: false,
 		label: "Sensor Type",
 	},
 	{
 		id: "value",
+		numeric: true,
 		alignRight: true,
 		disablePadding: false,
 		label: "Value",
@@ -64,7 +69,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-	const { order, orderBy, rowCount, onRequestSort } = props;
+	const { order, orderBy, onRequestSort } = props;
 	const createSortHandler = (property) => (event) => {
 		onRequestSort(event, property);
 	};
@@ -109,11 +114,12 @@ EnhancedTableHead.propTypes = {
 
 export default function EnhancedTable(props) {
 	const [order, setOrder] = React.useState("asc");
-	const [orderBy, setOrderBy] = React.useState("datetime");
+	const [orderBy, setOrderBy] = React.useState("Sensor.SensorName");
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	let rows = props.data;
+	console.log(rows);
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -163,6 +169,7 @@ export default function EnhancedTable(props) {
 									page * rowsPerPage + rowsPerPage
 								)
 								.map((row, index) => {
+									// const isItemSelected = isSelected(row.id);
 									const labelId = `enhanced-table-checkbox-${index}`;
 
 									return (
