@@ -1,4 +1,3 @@
-const { QueryTypes, Op } = require("sequelize");
 const Farm = require("../models/farm-model");
 
 const getFarm = async () => {

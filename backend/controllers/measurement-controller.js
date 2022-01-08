@@ -1,4 +1,4 @@
-const { QueryTypes, Op } = require("sequelize");
+const { Op } = require("sequelize");
 const Farm = require("../models/farm-model");
 const Sensor = require("../models/sensor-model");
 
@@ -12,16 +12,28 @@ const getMeasurements = async () => {
 
 const getFilteredMeasurements = async (filters) => {
 	await Measurement.sync();
+	console.log(filters);
 	const results = await Measurement.findAll({
+		include: [
+			{
+				model: Sensor,
+				where: {
+					SensorName: {
+						[Op.or]: filters.sensors.split(","),
+					},
+				},
+			},
+			{
+				model: Farm,
+				where: {
+					FarmName: {
+						[Op.or]: filters.farms.split(","),
+					},
+				},
+			},
+		],
 		where: {
-			datetime: { [Op.between]: [filters.starDate, filters.endDate] },
-			sensorType: {
-				[Op.or]: filters.sensors.split(","),
-			},
-			location: {
-				[Op.or]: filters.farms.split(","),
-			},
-			id: filters.id,
+			datetime: { [Op.between]: [filters.startDate, filters.endDate] },
 		},
 	});
 	return results;
@@ -32,6 +44,7 @@ const getLatestMeasurements = async (numberOfRecords) => {
 	const latestRecords = await Measurement.findAll({
 		include: [Farm, Sensor],
 		order: [["datetime", "DESC"]],
+
 		limit: numberOfRecords,
 	});
 	return latestRecords;
@@ -42,6 +55,16 @@ const getMeasurementsBetweenDates = async (starDate, endDate) => {
 	const records = await Measurement.findAll({
 		where: {
 			datetime: { [Op.between]: [starDate, endDate] },
+		},
+	});
+	return records;
+};
+
+const getMeasurementById = async (idNum) => {
+	await Measurement.sync();
+	const records = await Measurement.findAll({
+		where: {
+			id: idNum,
 		},
 	});
 	return records;
@@ -78,32 +101,5 @@ module.exports = {
 	updateMeasurement,
 	deleteMeasurement,
 	getMeasurements,
+	getMeasurementById,
 };
-
-// const connectDB = async () => {
-// 	try {
-// 		await sequelize.authenticate();
-// 		const ossi_farm = await sequelize.query("SELECT * FROM ossi_farm", {
-// 			type: QueryTypes.SELECT,
-// 		});
-// 		sequelize.close();
-// 	} catch (error) {
-// 		console.error("Unable to connect to the database:", error);
-// 	}
-// };
-
-// const getFilteredData = async (farmsArray, sensorsArray, starDate, endDate) => {
-// 	await Farm.sync();
-// 	const records = await Farm.findAll({
-// 		where: {
-// 			datetime: { [Op.between]: [starDate, endDate] },
-// 			sensorType: {
-// 				[Op.or]: sensorsArray.split(","),
-// 			},
-// 			location: {
-// 				[Op.or]: farmsArray.split(","),
-// 			},
-// 		},
-// 	});
-// 	return records;
-// };

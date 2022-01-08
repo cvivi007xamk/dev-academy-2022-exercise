@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const {
 	getFilteredMeasurements,
 	getMeasurementsBetweenDates,
@@ -11,8 +10,6 @@ const {
 	getMeasurements,
 } = require("../controllers/measurement-controller");
 
-const numberOfLatestMeasurements = 10;
-
 // // Endpoints to fetch data from farms with different granularities (by month, by metric)
 // // Aggregate calculation endpoints, endpoint which returns monthly averages, min/max and other statistical analysis
 
@@ -20,7 +17,7 @@ router.get("/", async (req, res) => {
 	res.send("Hello world!");
 });
 
-router.get("/measurements", async (req, res) => {
+router.get("/measurements/all", async (req, res) => {
 	const filters = req.query;
 	res.send(await getMeasurements());
 });

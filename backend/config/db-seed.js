@@ -1,11 +1,7 @@
-const path = require("path");
 const db = require("../config/db-config.js");
-
 const Farm = require("../models/farm-model");
 const Sensor = require("../models/sensor-model");
 const Measurement = require("../models/measurement-model");
-
-const filesDirectory = path.join(__dirname, "../csv/csvFiles/");
 
 let farms = [
 	{ FarmName: "Noora's farm" },

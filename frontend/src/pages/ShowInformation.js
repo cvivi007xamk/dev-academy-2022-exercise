@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { getData, createRow, updateRow } from "../requests/requests";
+import { getData } from "../requests/requests";
 import EnhancedTable from "../components/EnhancedTable";
 import MultipleSelect from "../components/MultipleSelect";
 import Button from "@mui/material/Button";
 import ChangeDates from "../components/ChangeDates";
 import SensorCheckboxes from "../components/SensorCheckboxes";
-import {
-	ThemeProvider,
-	createTheme,
-	responsiveFontSizes,
-} from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 
 function ShowInformation() {
 	const [data, setData] = useState([]);
-	const [url, setUrl] = useState(`http://localhost:3001/measurements`);
 
 	const [farmNamesArray, setFarmNamesArray] = useState([
 		"Friman Metsola collective",
@@ -35,12 +27,15 @@ function ShowInformation() {
 
 	// Set the startDate
 	const [startDate, setStartDate] = useState(
-		new Date("2018-12-31T22:00:00.000Z")
+		new Date("2018-12-31T22:00:00.000Z").toISOString()
 	);
 
 	// Set the endDate
-	const [endDate, setEndDate] = useState(new Date());
+	const [endDate, setEndDate] = useState(new Date().toISOString());
 
+	const [url, setUrl] = useState(
+		`http://localhost:3001/measurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
+	);
 	useEffect(() => {
 		getData(url)
 			.then((newData) => {
@@ -50,6 +45,7 @@ function ShowInformation() {
 			.catch((error) => {
 				setDataError(error);
 			});
+		console.log("Current URL:", url);
 	}, [url]);
 
 	return (
@@ -72,18 +68,7 @@ function ShowInformation() {
 				sensorsArray={sensorsArray}
 				setSensorsArray={setSensorsArray}
 			/>
-			{/* <Button
-				variant="contained"
-				sx={{
-					marginTop: "20px",
-					marginBottom: "20px",
-				}}
-				onClick={() =>
-					setUrl(`http://localhost:3001/api/sensor/${sensorsArray}`)
-				}
-			>
-				Change Sensors
-			</Button> */}
+
 			<ChangeDates
 				setStartDate={setStartDate}
 				setEndDate={setEndDate}
@@ -99,7 +84,7 @@ function ShowInformation() {
 				}}
 				onClick={() =>
 					setUrl(
-						`http://localhost:3001/meaurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
+						`http://localhost:3001/measurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
 					)
 				}
 			>

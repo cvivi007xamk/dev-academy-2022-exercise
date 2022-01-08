@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://localhost:3001/api";
+const url = "http://localhost:3001/measurements";
 
 // const callFarmData = async (farmName) => {
 // 	const response = await axios.get(`http://localhost:3001/api/${farmName}`);

@@ -10,9 +10,7 @@ const CssTextField = styled(TextField)({
 	"& label.Mui-focused": {
 		color: "primary.main",
 	},
-	// "& .MuiInput-underline:after": {
-	// 	borderBottomColor: "primary.main",
-	// },
+
 	"& .MuiOutlinedInput-root": {
 		"& fieldset": {
 			borderColor: "secondary.contrastText",
@@ -44,6 +42,7 @@ const ChangeDates = (props) => {
 					value={startValue}
 					onChange={(newValue) => {
 						props.setStartDate(newValue.toISOString());
+						console.log("start date", newValue.toISOString());
 						setStartValue(newValue);
 					}}
 					renderInput={(params) => (
@@ -68,6 +67,7 @@ const ChangeDates = (props) => {
 					value={endValue}
 					onChange={(newValue) => {
 						props.setEndDate(newValue.toISOString());
+						console.log("end date", newValue.toISOString());
 						setEndValue(newValue);
 					}}
 					renderInput={(params) => (

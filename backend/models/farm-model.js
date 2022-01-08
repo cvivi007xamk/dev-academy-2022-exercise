@@ -3,7 +3,6 @@ const db = require("../config/db-config.js");
 const Farm = db.define(
 	"Farm",
 	{
-		// Model attributes are defined here
 		FarmName: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -28,9 +27,7 @@ const Farm = db.define(
 			},
 		},
 	},
-	{
-		// Other model options go here
-	}
+	{}
 );
 
 module.exports = Farm;

@@ -42,7 +42,3 @@ app.listen(PORT, async function (err) {
 	})();
 });
 console.log(`Node.js server running on port ${PORT}`);
-
-// (async () => {
-
-// })()
