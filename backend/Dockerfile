@@ -8,6 +8,4 @@ COPY . .
 
 RUN npm install
 
-ENV REQUEST_ORIGIN=http://localhost:3000
-
 CMD ["npm", "start"]
