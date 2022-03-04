@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+    frontend:
+        image: dev-academy-frontend
+        ports:
+            - 3000:3000
+        environment:
+            - REACT_APP_BACKEND=http://localhost:3001
+
+    backend:
+        image: dev-academy-backend
+        ports:
+            - 3001:3001
+        environment:
+            - DATABASE_URL=postgres://user1:Passw0rd@database:5432/farm_data
+
+    database:
+        restart: always
+        image: postgres
+        environment:
+            - POSTGRES_USER=user1
+            - POSTGRES_PASSWORD=Passw0rd
+            - POSTGRES_DB=farm_data

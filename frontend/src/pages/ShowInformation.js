@@ -35,7 +35,7 @@ function ShowInformation() {
 	const [endDate, setEndDate] = useState(new Date().toISOString());
 
 	const [url, setUrl] = useState(
-		`http://localhost:3001/measurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
+		`${process.env.REACT_APP_BACKEND}/measurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
 	);
 	useEffect(() => {
 		getData(url)
@@ -103,7 +103,7 @@ function ShowInformation() {
 				}}
 				onClick={() =>
 					setUrl(
-						`http://localhost:3001/measurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
+						`${process.env.REACT_APP_BACKEND}/measurements?farms=${farmNamesArray}&sensors=${sensorsArray}&startDate=${startDate}&endDate=${endDate}`
 					)
 				}
 			>
