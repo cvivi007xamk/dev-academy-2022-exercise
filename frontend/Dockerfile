@@ -1,11 +1,31 @@
-FROM node:16
+FROM alpine as build-stage
 
-EXPOSE 3000
+ENV LC_ALL=C.UTF-8
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm install
+RUN apk add --no-cache nodejs npm && \
+    npm install && \
+    npm run build 
 
-CMD ["npm", "start"]
+FROM alpine
+
+EXPOSE 3000
+
+WORKDIR /usr/src/app
+
+ENV LC_ALL=C.UTF-8
+
+COPY --from=build-stage /usr/src/app/build /usr/src/app/build
+
+RUN apk add --no-cache nodejs npm && \
+    npm install -g serve && \
+    adduser -D myuser && chown -R myuser /usr/src/app && \
+    apk del npm
+
+USER myuser
+
+CMD ["serve", "-s", "-l", "3000", "build"]
+
